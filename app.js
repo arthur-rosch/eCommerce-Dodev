@@ -3,22 +3,26 @@ var id = [],
   price = [],
   evaluation = [],
   escolha = true,
-  loop = true;
-index = 0;
+  loop = true,
+  index = 0;
 
 while (loop) {
   var menu = prompt(
-    "Escolha oque gostaria de fazer: 1-Cadastrar Produto \n2-Procurar Produto por Numero \n3-Procurar por Nome e receber o Id" +
-      "\n4-Ordenar Produto por Id \n5-Ordenar Por Valor \n6-Ordenar por Avaliação "
+    "Escolha oque gostaria de fazer: \n1-Cadastrar Produto \n2-Procurar Produto por Numero \n3-Procurar por Nome e receber o Id" +
+      "\n4-Ordenar Produto por Id \n5-Ordenar Por Valor \n6-Ordenar por Avaliação \n7-Mudar Valor de Um Produto \n8-Deletar Produto \n9-Finalizar Programa"
   );
   if (menu == 1) {
     registerProduct();
   }
   if (menu == 2) {
-    searchId();
+    var searchID = prompt("Escolha um Id Para Procurar o Produto");
+    searchId(searchID);
   }
   if (menu == 3) {
-    searchName();
+    var searchNAME = prompt(
+      "Escolha o Nome do Produto para Retornar o Id do Produto"
+    );
+    searchName(searchNAME);
   }
   if (menu == 4) {
     ordensId();
@@ -28,6 +32,20 @@ while (loop) {
   }
   if (menu == 6) {
     ordensEvaluation();
+  }
+  if (menu == 7) {
+    var replaceIdValue = prompt(
+      "Qual id do produto que gostaria de mudar o valor: "
+    );
+    var replaceValue = prompt("Qual o valor que gostaria de por:");
+    updateValue(replaceIdValue, replaceValue);
+  }
+  if (menu == 8) {
+    var idDelete = prompt("Id do Produto que vc quer Excluir");
+    deleteProduct(idDelete);
+  }
+  if (menu == 9) {
+    loop = false;
   }
 }
 function registerProduct() {
@@ -45,29 +63,33 @@ function registerProduct() {
       escolha = true;
     }
   }
+  return;
 }
-function searchId() {
-  var searchId = prompt("Escolha um Id Para Procurar o Produto");
+function searchId(idParameters) {
+  //   2.Buscar um produto por id, ou seja, passar o id como parâmetro e exibir as
+  // informações do produto correspondente;
+  // Ex.: Entrada = 3
   for (let A = 0; A < id.length; A++) {
-    if (searchId == id[A]) {
-      console.log(
+    if (idParameters == id[A]) {
+      alert(
         `Id:${id[A]}  Nome:${nome[A]}  Valor:${price[A]}  Avaliação:${evaluation[A]}`
       );
     }
   }
   return;
 }
-function searchName() {
-  var searchName = prompt(
-    "Escolha o Nome do Produto para Retornar o Id do Produto"
-  );
+function searchName(nomeParameters) {
+  //   3.Buscar um produto pelo nome e retornar o id dele;
+  // Ex: Entrada = Mouse Médio
+  // Retorno = 2
   for (let A = 0; A < nome.length; A++) {
-    if (searchName == nome[A]) {
-      console.log(`Esse e o Id:${id[A]}`);
+    if (nomeParameters == nome[A]) {
+      alert(`Id:${id[A]}`);
     }
   }
 }
-function ordensId() {
+function ordersId() {
+  // 4. Exibir todos os produtos ordenados pelo id;
   var idAuxiliar;
   for (var A = 0; A < id.length; A++) {
     for (var B = 0; B < id.length; B++) {
@@ -75,12 +97,25 @@ function ordensId() {
         idAuxiliar = id[B];
         id[B] = id[B + 1];
         id[B + 1] = idAuxiliar;
+
+        nomeAuxiliar = nome[B];
+        nome[B] = nome[B + 1];
+        nome[B + 1] = nomeAuxiliar;
+
+        priceAuxiliar = price[B];
+        price[B] = price[B + 1];
+        price[B + 1] = priceAuxiliar;
+
+        evaluationAuxiliar = evaluation[B];
+        evaluation[B] = evaluation[B + 1];
+        evaluation[B + 1] = evaluationAuxiliar;
       }
     }
   }
-  console.log(id);
+  alert(`Id:${id} \nNome:${nome} \nValor:${price} \nAvaliação:${evaluation}`);
 }
-function ordensPrice() {
+function orderPrice() {
+  // 5. Exibir os produtos ordenador pelo preço;
   var priceAuxiliar, idAuxiliar, nomeAuxiliar, evaluationAuxiliar;
   for (var A = 0; A < price.length; A++) {
     for (var B = 0; B < price.length; B++) {
@@ -103,9 +138,11 @@ function ordensPrice() {
       }
     }
   }
-  console.log(`Id:${id} Nome:${nome} Valor:${price} Avaliação:${evaluation}`);
+  alert(`Id:${id} \nNome:${nome} \nValor:${price} \nAvaliação:${evaluation}`);
 }
-function ordensEvaluation() {
+function orderEvaluation() {
+  // 6. Exibir os produtos pela ordem de avaliação;
+
   var priceAuxiliar, idAuxiliar, nomeAuxiliar, evaluationAuxiliar;
   for (var A = 0; A < evaluation.length; A++) {
     for (var B = 0; B < evaluation.length; B++) {
@@ -128,5 +165,36 @@ function ordensEvaluation() {
       }
     }
   }
-  console.log(`Id:${id} Nome:${nome} Valor:${price} Avaliação:${evaluation}`);
+  alert(`\nId:${id} \nNome:${nome} \nValor:${price} \mAvaliação:${evaluation}`);
+}
+function updateValue(idParameters, ValueParameters) {
+  //   7.Atualizar o preço de um produto, para isso deve receber o id do produto como
+  // parâmetro e o novo valor para atualizar;
+  // Ex.: Id = 3, Valor = 200
+
+  for (let A = 0; A < id.length; A++) {
+    if (idParameters == id[A]) {
+      price[A] = ValueParameters;
+      alert(
+        `\nId:${id[A]} \nNome:${nome[A]} \nValor:${price[A]} \nAvaliação:${evaluation[A]}`
+      );
+    }
+  }
+}
+function deleteProduct(idParameters) {
+  //   8.Deletar um produto, não esqueça de organizar as informações para que não fique
+  // espaços vazios;
+  for (let A = 0; A < id.length; A++) {
+    if (idParameters == id[A]) {
+      id[A] = id[A + 1];
+      nome[A] = nome[A + 1];
+      price[A] = price[A + 1];
+      evaluation[A] = evaluation[A + 1];
+      id.length--;
+      nome.length--;
+      price.length--;
+      evaluation.length--;
+    }
+  }
+  alert(`\nId:${id} \nNome:${nome} \nValor:${price} \nAvaliação:${evaluation}`);
 }
