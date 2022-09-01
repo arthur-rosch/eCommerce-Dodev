@@ -29,3 +29,13 @@ function searchId() {
     }
   }
 }
+function searchName() {
+  var searchName = prompt(
+    "Escolha o Nome do Produto para Retornar o Id do Produto"
+  );
+  for (let A = 0; A < nome.length; A++) {
+    if (searchName == nome[A]) {
+      console.log(`Esse e  o Id:${id[A]}`);
+    }
+  }
+}
