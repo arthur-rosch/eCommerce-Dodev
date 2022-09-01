@@ -3,10 +3,33 @@ var id = [],
   price = [],
   evaluation = [],
   escolha = true,
-  index = 0;
+  loop = true;
+index = 0;
 
-registerProduct();
-ordensPrice();
+while (loop) {
+  var menu = prompt(
+    "Escolha oque gostaria de fazer: 1-Cadastrar Produto \n2-Procurar Produto por Numero \n3-Procurar por Nome e receber o Id" +
+      "\n4-Ordenar Produto por Id \n5-Ordenar Por Valor \n6-Ordenar por Avaliação "
+  );
+  if (menu == 1) {
+    registerProduct();
+  }
+  if (menu == 2) {
+    searchId();
+  }
+  if (menu == 3) {
+    searchName();
+  }
+  if (menu == 4) {
+    ordensId();
+  }
+  if (menu == 5) {
+    ordensPrice();
+  }
+  if (menu == 6) {
+    ordensEvaluation();
+  }
+}
 function registerProduct() {
   // 1. Cadastrar um produto. Um produto deve ter um id, nome, preço e avaliação;
   while (escolha) {
@@ -62,6 +85,31 @@ function ordensPrice() {
   for (var A = 0; A < price.length; A++) {
     for (var B = 0; B < price.length; B++) {
       if (price[B] < price[B + 1]) {
+        idAuxiliar = id[B];
+        id[B] = id[B + 1];
+        id[B + 1] = idAuxiliar;
+
+        nomeAuxiliar = nome[B];
+        nome[B] = nome[B + 1];
+        nome[B + 1] = nomeAuxiliar;
+
+        priceAuxiliar = price[B];
+        price[B] = price[B + 1];
+        price[B + 1] = priceAuxiliar;
+
+        evaluationAuxiliar = evaluation[B];
+        evaluation[B] = evaluation[B + 1];
+        evaluation[B + 1] = evaluationAuxiliar;
+      }
+    }
+  }
+  console.log(`Id:${id} Nome:${nome} Valor:${price} Avaliação:${evaluation}`);
+}
+function ordensEvaluation() {
+  var priceAuxiliar, idAuxiliar, nomeAuxiliar, evaluationAuxiliar;
+  for (var A = 0; A < evaluation.length; A++) {
+    for (var B = 0; B < evaluation.length; B++) {
+      if (evaluation[B] < evaluation[B + 1]) {
         idAuxiliar = id[B];
         id[B] = id[B + 1];
         id[B + 1] = idAuxiliar;
