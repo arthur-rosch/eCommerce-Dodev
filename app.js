@@ -2,14 +2,14 @@ var id = [],
   nome = [],
   price = [],
   evaluation = [],
-  escolha = true,
-  loop = true,
-  index = 0;
+  productsCart = [],
+  amountCart = [],
+  loop = true;
 
 while (loop) {
-  var menu = prompt(
-    "Escolha oque gostaria de fazer: \n1-Cadastrar Produto \n2-Procurar Produto por Numero \n3-Procurar por Nome e receber o Id" +
-      "\n4-Ordenar Produto por Id \n5-Ordenar Por Valor \n6-Ordenar por Avaliação \n7-Mudar Valor de Um Produto \n8-Deletar Produto \n9-Finalizar Programa"
+  const menu = prompt(
+    "Escolha oque gostaria de fazer: \n1-Cadastrar Produto \n2-Procurar Produto por Id\n3-Procurar por Nome" +
+      "\n4-Ordenar Produto por Id \n5-Ordenar Por Valor \n6-Ordenar por Avaliação \n7-Mudar Valor de Um Produto \n8-Deletar Produto \n9-Carrinho \n10-Finalizar Programa"
   );
   if (menu == 1) {
     registerProduct();
@@ -25,13 +25,13 @@ while (loop) {
     searchName(searchNAME);
   }
   if (menu == 4) {
-    ordensId();
+    orderId();
   }
   if (menu == 5) {
-    ordensPrice();
+    orderPrice();
   }
   if (menu == 6) {
-    ordensEvaluation();
+    orderEvaluation();
   }
   if (menu == 7) {
     var replaceIdValue = prompt(
@@ -45,15 +45,44 @@ while (loop) {
     deleteProduct(idDelete);
   }
   if (menu == 9) {
+    let exit = true;
+    while (exit) {
+      const choice = prompt(
+        "1-Adicionar Produto \n2-Excluir Produto \n3-Valor Total do Carrinho \n4-Ver Carrinho \n5-Sair do Carrinho"
+      );
+      if (choice == 1) {
+        const product = prompt("Nome do Produto que voce Gostaria:");
+        addCart(product);
+      }
+      if (choice == 2) {
+        const productName = prompt(
+          "Qual nome do produto que você deseja remover ?"
+        );
+        removeCart(productName);
+      }
+      if (choice == 3) {
+        alert(`Valor Total: ${totalValue()}`);
+      }
+      if (choice == 4) {
+        cartList();
+      }
+      if (choice == 5) {
+        exit = false;
+      }
+    }
+  }
+  if (menu == 10) {
     loop = false;
   }
 }
 function registerProduct() {
   // 1. Cadastrar um produto. Um produto deve ter um id, nome, preço e avaliação;
+  let escolha = true,
+    index = 0;
   while (escolha) {
     id[index] = prompt("Cadastre o Id do seu Produto");
     nome[index] = prompt("Cadastre o Nome do seu Produto");
-    price[index] = prompt("Cadastre o Valor do seu Produto");
+    price[index] = Number(prompt("Cadastre o Valor do seu Produto"));
     evaluation[index] = prompt("Cadastre a Avaliação do seu Produto");
     index++;
     escolha = prompt("Gostaria de Cadastra mais produtos ? 1-Sim \n2-Nao ");
@@ -88,7 +117,7 @@ function searchName(nomeParameters) {
     }
   }
 }
-function ordersId() {
+function orderId() {
   // 4. Exibir todos os produtos ordenados pelo id;
   var idAuxiliar;
   for (var A = 0; A < id.length; A++) {
@@ -197,4 +226,63 @@ function deleteProduct(idParameters) {
     }
   }
   alert(`\nId:${id} \nNome:${nome} \nValor:${price} \nAvaliação:${evaluation}`);
+}
+function addCart(nameParameters) {
+  let choiceCart = true,
+    base = 0;
+
+  while (choiceCart) {
+    if (nameParameters == productsCart[base]) {
+      let amount = parseInt(
+        prompt(
+          "Qual a quantidade de produto que você deseja adicionar ao Carrinho ?"
+        )
+      );
+      amountCart[base] = amount;
+      base++;
+      choiceCart = false;
+    } else {
+      productsCart[base] = nameParameters;
+      amount = parseInt(
+        prompt(
+          "Qual a quantidade de produto que você deseja adicionar ao Carrinho ?"
+        )
+      );
+      amountCart[base] = amount;
+      base++;
+      choiceCart = false;
+    }
+  }
+}
+function removeCart(nameParameters) {
+  let auxValue = 0;
+  for (let A = 0; A < productsCart.length; A++) {
+    if (nameParameters == productsCart[A]) {
+      let productAmount = prompt(
+        "Qual a quantidade que você deseja remover do Carrinho ?"
+      );
+      if (productAmount >= amountCart[A]) {
+        amountCart[A] = auxValue;
+        auxValue = amountCart[A + 1];
+        productsCart.length--;
+        amountCart.length--;
+      } else {
+        amountCart[A] = amountCart[A] - productAmount;
+      }
+    }
+  }
+}
+function totalValue() {
+  let total = 0;
+  for (let A = 0; A < productsCart.length; A++) {
+    for (let B = 0; B < nome.length; B++) {
+      if (productsCart[A] == nome[B]) {
+        total = total + price[B] * amountCart[A];
+      }
+    }
+  }
+  return total;
+}
+function cartList() {
+  alert(`Produtos: {${productsCart}}  Valor Total: $${totalValue()}`);
 }
